@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import * as S from './SignUp.style'
 import { IconExit } from '../../assets/images'
 import { CreateUser, AddUserData } from '../../firebase'
+import useToastMessage from '../../hooks/useToastMessage'
 
 const RegexID = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
 const RegexPW = /^(?=.*[a-zA-Z\d])[a-zA-Z\d]{8,}$/
@@ -65,6 +66,8 @@ const ModalSignUp = (props) => {
       .finally(() => {
         const inputEl = e.target.querySelectorAll('input')
         Array.from(inputEl).forEach((el) => (el.value = ''))
+        // window.location.reload()
+        // useToastMessage('환영합니다')
       })
     console.log('완료')
   }

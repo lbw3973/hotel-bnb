@@ -83,11 +83,10 @@ export const InputContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid;
-  ${(props) => (props.upper ? '' : `border-top: none;`)}
+  border: 1px solid #999;
   border-radius: ${(props) => (props.upper ? '8px 8px 0 0;' : props.lower ? '0 0 8px 8px;' : '')};
   &:focus-within {
-    border: 2px solid;
+    border: 1px solid #000;
   }
 `
 
