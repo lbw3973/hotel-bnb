@@ -4,6 +4,7 @@ export const PageContainer = styled.div`
   display: flex;
   position: relative;
   height: 100%;
+  margin-top: 80px;
 `
 
 export const RoomListWrapper = styled.div`

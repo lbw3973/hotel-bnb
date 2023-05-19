@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const RoomListWrapper = styled.div`
-  margin: 0 auto;
+  margin: 80px auto;
   display: grid;
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
