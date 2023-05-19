@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
-import { GoogleFavicon, IconExit } from '@/assets/images'
+import { IconExit } from '@/assets/images'
 import * as S from './Login.style'
-import { AddUserData, loginEmail, loginGoogle } from '../../firebase'
+import { loginEmail } from '../../firebase'
 import useToastMessage from '../../hooks/useToastMessage'
 
 const ModalLogin = (props) => {
@@ -24,20 +24,6 @@ const ModalLogin = (props) => {
         showModalFunc(false)
         setValues({ ID: '', PW: '' })
         useToastMessage('환영합니다')
-      })
-      .catch(() => {
-        spanConfirm.current.innerText = '아이디 혹은 비밀번호를 확인해주세요'
-      })
-  }
-
-  const googleLogin = () => {
-    loginGoogle()
-      .then((result) => {
-        const user = result.user
-        AddUserData(user.uid, user.email, user.displayName, user.phoneNumber, user.photoURL)
-        closeFunc(false)
-        showModalFunc(false)
-        useToastMessage(`${user.displayName}님 환영합니다.`)
       })
       .catch(() => {
         spanConfirm.current.innerText = '아이디 혹은 비밀번호를 확인해주세요'
@@ -102,12 +88,6 @@ const ModalLogin = (props) => {
               </S.BtnSignUp>
             </S.TextContainer>
           </S.LoginForm>
-          <S.TextContainer>
-            <S.ImageContainer>
-              <GoogleFavicon />
-            </S.ImageContainer>
-            <S.BtnGoogleLogin onClick={googleLogin}>구글로 로그인하기</S.BtnGoogleLogin>
-          </S.TextContainer>
         </S.ContentContainer>
       </S.LoginContainer>
     </S.Container>

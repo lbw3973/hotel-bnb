@@ -16,7 +16,6 @@ import { ReactComponent as PersonalInfoLock2 } from '@/assets/images/PersonalInf
 import { ReactComponent as PaymentIcon } from '@/assets/images/ReservationHistoryPage/PaymentIcon.svg'
 
 import { ReactComponent as Heart } from '@/assets/images/Heart.svg'
-import { ReactComponent as GoogleFavicon } from './GoogleFavicon.svg'
 import { ReactComponent as List } from '@/assets/images/Common/ChevronRight.svg'
 import { ReactComponent as IconHeaderSearch } from '@/assets/images/IconHeaderSearch.svg'
 import { ReactComponent as IconPrevious } from '@/assets/images/IconPrevious.svg'
@@ -49,7 +48,6 @@ export {
   PersonalInfoLock2,
   PaymentIcon,
   IconExit,
-  GoogleFavicon,
   List,
   IconHeaderSearch,
   IconPrevious,

@@ -115,12 +115,6 @@ export const BtnSubmit = styled.button`
 
 export const BtnSignUp = styled(BtnSubmit)``
 
-export const BtnGoogleLogin = styled(BtnSubmit)`
-  background-color: #fff;
-  color: #000;
-  font-size: 14px;
-`
-
 export const ImageContainer = styled.div`
   position: absolute;
   top: 15px;
