@@ -99,6 +99,22 @@ export const ParagraphDiv = styled.div`
   font-weight: bold;
   font-size: 16px;
   display: flex;
+
+  .Confirm--Email {
+    position: absolute;
+    right: 0;
+
+    button {
+      position: relative;
+      z-index: 1000;
+      cursor: pointer;
+      background-color: var(--color-main);
+      color: var(--color-white);
+      font-weight: 500;
+      padding: 5px;
+      border-radius: 10px;
+    }
+  }
 `
 
 export const InputIDPW = styled.input`

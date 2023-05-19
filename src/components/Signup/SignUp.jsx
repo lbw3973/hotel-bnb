@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as S from './SignUp.style'
 import { IconExit } from '../../assets/images'
 import { CreateUser, AddUserData } from '../../firebase'
+import { useDuplicateID } from '../../hooks/useDuplicateID'
 import useToastMessage from '../../hooks/useToastMessage'
+import { doc } from 'prettier'
+import { ToastContainer } from 'react-toastify'
 
 const RegexID = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
 const RegexPW = /^(?=.*[a-zA-Z\d])[a-zA-Z\d]{8,}$/
@@ -10,6 +13,7 @@ const RegexPhoneNumber = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/
 
 const ModalSignUp = (props) => {
   const { open, set, showModalFunc } = props
+  const RefDuplicate = useRef(null)
   const [values, setValues] = useState({
     EMAIL: '',
     PW: '',
@@ -23,6 +27,9 @@ const ModalSignUp = (props) => {
       ...values,
       [e.target.name]: e.target.value,
     })
+    RefDuplicate.current.style.backgroundColor = 'red'
+    RefDuplicate.current.innerText = '중복확인'
+
     const spanId = `span_${e.target.name}`
     const spanEl = document.querySelector(`#${spanId}`)
 
@@ -45,13 +52,35 @@ const ModalSignUp = (props) => {
     }
   }
 
+  const handleConfirm = async () => {
+    if (values.EMAIL === '') {
+      alert('유효한 아이디를 입력해주세요')
+      return
+    }
+    const duplicate = await useDuplicateID(values.EMAIL)
+    if (duplicate) {
+      RefDuplicate.current.style.backgroundColor = 'red'
+      alert('중복된 아이디가 있습니다.')
+      useToastMessage('중복된 아이디가 있습니다.')
+    } else {
+      RefDuplicate.current.style.backgroundColor = 'blue'
+      RefDuplicate.current.innerText = '확인완료'
+    }
+  }
+
   const signUp = async (e) => {
     e.preventDefault()
     const formEl = document.querySelector('#SignupForm')
     const spanEls = formEl.querySelectorAll('span')
     const bSignup = Array.from(spanEls).some((el) => el.style.display !== 'none')
-    if (bSignup === true) {
-      alert('양식에 맞게 작성해주세요')
+    const bDuplicate = RefDuplicate.current !== '확인완료'
+
+    if ((bSignup || bDuplicate) === true) {
+      if (bSignup) {
+        alert('양식에 맞게 작성해주세요')
+      } else if (bDuplicate) {
+        alert('아이디 중복확인을 해주세요')
+      }
       return
     }
     await CreateUser(values.EMAIL, values.PW)
@@ -66,8 +95,6 @@ const ModalSignUp = (props) => {
       .finally(() => {
         const inputEl = e.target.querySelectorAll('input')
         Array.from(inputEl).forEach((el) => (el.value = ''))
-        // window.location.reload()
-        // useToastMessage('환영합니다')
       })
     console.log('완료')
   }
@@ -94,6 +121,11 @@ const ModalSignUp = (props) => {
                   <S.SpanSignupConfirm id="span_EMAIL">
                     이메일 양식에 맞춰주세요
                   </S.SpanSignupConfirm>
+                  <div className="Confirm--Email">
+                    <button type="button" onClick={handleConfirm} ref={RefDuplicate}>
+                      중복확인
+                    </button>
+                  </div>
                 </S.ParagraphDiv>
                 <S.InputIDPW name="EMAIL" autoComplete="off" />
               </S.InputContainer>
@@ -136,6 +168,7 @@ const ModalSignUp = (props) => {
           </S.TextContainer>
         </S.ContentContainer>
       </S.SignUpContainer>
+      <ToastContainer />
     </S.Conatiner>
   )
 }
