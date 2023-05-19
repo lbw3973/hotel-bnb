@@ -4,8 +4,7 @@ import { IconExit } from '../../assets/images'
 import { CreateUser, AddUserData } from '../../firebase'
 import { useDuplicateID } from '../../hooks/useDuplicateID'
 import useToastMessage from '../../hooks/useToastMessage'
-import { doc } from 'prettier'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, useToast } from 'react-toastify'
 
 const RegexID = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
 const RegexPW = /^(?=.*[a-zA-Z\d])[a-zA-Z\d]{8,}$/
@@ -27,8 +26,10 @@ const ModalSignUp = (props) => {
       ...values,
       [e.target.name]: e.target.value,
     })
-    RefDuplicate.current.style.backgroundColor = 'red'
-    RefDuplicate.current.innerText = '중복확인'
+    if (e.target.name === 'EMAIL') {
+      RefDuplicate.current.style.backgroundColor = 'red'
+      RefDuplicate.current.innerText = '중복확인'
+    }
 
     const spanId = `span_${e.target.name}`
     const spanEl = document.querySelector(`#${spanId}`)
@@ -68,15 +69,23 @@ const ModalSignUp = (props) => {
     }
   }
 
+  const emptyCheck = () => {
+    return Object.values(values)
+      .flat()
+      .some((value) => value === '')
+  }
+
   const signUp = async (e) => {
     e.preventDefault()
+
     const formEl = document.querySelector('#SignupForm')
     const spanEls = formEl.querySelectorAll('span')
     const bSignup = Array.from(spanEls).some((el) => el.style.display !== 'none')
-    const bDuplicate = RefDuplicate.current !== '확인완료'
+    const isEmpty = emptyCheck()
+    const bDuplicate = RefDuplicate.current.innerText !== '확인완료'
 
-    if ((bSignup || bDuplicate) === true) {
-      if (bSignup) {
+    if ((bSignup || isEmpty || bDuplicate) === true) {
+      if (bSignup || isEmpty) {
         alert('양식에 맞게 작성해주세요')
       } else if (bDuplicate) {
         alert('아이디 중복확인을 해주세요')
@@ -93,6 +102,7 @@ const ModalSignUp = (props) => {
         alert(err)
       })
       .finally(() => {
+        useToastMessage(`${values.NAME}님 환영합니다.`)
         const inputEl = e.target.querySelectorAll('input')
         Array.from(inputEl).forEach((el) => (el.value = ''))
       })
