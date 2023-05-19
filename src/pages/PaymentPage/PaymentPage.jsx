@@ -12,6 +12,7 @@ import {
   ImagePayButton,
 } from '../../assets/images'
 import { BiBadgeCheck } from 'react-icons/bi'
+import useToastMessage from '../../hooks/useToastMessage'
 
 const PaymentPage = () => {
   const location = useLocation()
@@ -48,6 +49,7 @@ const PaymentPage = () => {
 
   const handleClick = () => {
     if (!value.text) {
+      useToastMessage('필수 정보를 입력해주세요')
       return
     } else if (confirm('예약 확정 하시겠습니까?')) {
       postKaKaoPay(kakaoPayData)
@@ -60,7 +62,6 @@ const PaymentPage = () => {
       ...value,
       [e.target.name]: e.target.value,
     })
-    console.log(value.text)
   }
 
   return (
@@ -78,7 +79,7 @@ const PaymentPage = () => {
         <S.ContentContainer>
           {/* 예약 정보 */}
           <S.BookInfoWrapper>
-            <div className='bookInfo-title-wrapper'>
+            <div className="bookInfo-title-wrapper">
               <S.BookTitleDiv>예약 정보</S.BookTitleDiv>
               <S.EditButton>수정</S.EditButton>
             </div>
@@ -125,7 +126,6 @@ const PaymentPage = () => {
               <S.RefundTitle>환불 정책</S.RefundTitle>
               <p>
                 <strong>결제 이후에는 환불 받으실 수 없습니다.</strong> 체크인 날짜인 6월 4일
-                
               </p>
             </S.RefundDiv>
             <S.RuleDiv style={{ wordBreak: 'keep-all' }}>
@@ -149,9 +149,7 @@ const PaymentPage = () => {
               또한, 개정된 이용 약관과 결제 서비스 약관 및 개인정보 처리방침에도 동의합니다.
             </S.NoticePaymentDiv>
             <S.SubmitButtonDiv>
-              <S.SubmitButton state={value.text} onClick={handleClick}>
-                예약 하기
-              </S.SubmitButton>
+              <S.SubmitButton onClick={handleClick}>예약 하기</S.SubmitButton>
             </S.SubmitButtonDiv>
           </S.BookInfoWrapper>
           {/* 결제 정보 */}

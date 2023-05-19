@@ -138,8 +138,7 @@ export const SubmitButtonDiv = styled.div`
 export const SubmitButton = styled.button`
   width: 140px;
   height: 60px;
-  background-color: ${({ state }) => (state ? 'var(--color-main)' : '#ddd')};
-  cursor: ${({ state }) => (state ? 'pointer' : 'not-allowed')};
+  background-color: var(--color-main);
   color: #fff;
   border-radius: 10px;
 `
